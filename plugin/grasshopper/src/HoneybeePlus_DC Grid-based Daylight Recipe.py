@@ -7,39 +7,36 @@
 # @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
 
 """
-Grid-based Recipe.
+Daylight Coefficient Grid-based Daylight Recipe.
+Use this recipe to set up annual daylight analysis.
 
 -
 
     Args:
-        _sky: A radiance sky. Find honeybee skies under 02::Daylight::Light Sources.
-        _testPoints: A list or a datatree of points. Each branch of the datatree
-            will be considered as a point group.
-        ptsVectors_: A list or a datatree of vectors. Each vector represents the
-            direction of the respective test point in testPoints. If only one
-            value is provided it will be used for all the test points. If no value
-            is provided (0, 0, 1) will be assigned for all the vectors.
+        _skyMTX: A sky matrix or a sky vector. Find honeybee skies under 02::Daylight::Light Sources.
+        _analysisGrids: A list of Honeybee analysis grids.
         _analysisType_: Analysis type. [0] illuminance(lux), [1] radiation (kwh),
             [2] luminance (Candela).
         _radiancePar_: Radiance parameters for Grid-based analysis. Find Radiance
             parameters node under 03::Daylight::Recipes.
+        reuseDaylightMTX_: 
     Returns:
         readMe!: Reports, errors, warnings, etc.
-        analysisRecipe: Grid-based analysis recipe. Connect this recipe to
-            Run Radiance Analysis to run a grid-based analysis.
+        analysisRecipe: Annual analysis recipe. Connect this recipe to Run Radiance
+            Analysis to run a annual analysis.
 """
 
-ghenv.Component.Name = "HoneybeePlus_Grid-Based Recipe"
-ghenv.Component.NickName = 'gridBasedRecipe'
-ghenv.Component.Message = 'VER 0.0.01\nDEC_02_2016'
+ghenv.Component.Name = "HoneybeePlus_DC Grid-based Daylight Recipe"
+ghenv.Component.NickName = 'DCoeffGBRecipe'
+ghenv.Component.Message = 'VER 0.0.01\nDEC_03_2016'
 ghenv.Component.Category = "HoneybeePlus"
 ghenv.Component.SubCategory = '03 :: Daylight :: Recipe'
-ghenv.Component.AdditionalHelpFromDocStrings = "1"
+ghenv.Component.AdditionalHelpFromDocStrings = "2"
 
-#    import honeybee
-#    reload(honeybee.radiance.recipe.gridbased)
+import honeybee
+reload(honeybee.radiance.recipe.dc.gridbased)
 try:
-    from honeybee.radiance.recipe.gridbased import GridBasedAnalysisRecipe
+    from honeybee.radiance.recipe.dc.gridbased import DaylightCoeffGridBasedAnalysisRecipe
 except ImportError as e:
     msg = '\nFailed to import honeybee. Did you install honeybee on your machine?' + \
             '\nYou can download the installer file from github: ' + \
@@ -50,8 +47,6 @@ except ImportError as e:
     raise ImportError('{}\n\t{}'.format(msg, e))
 
 
-if _sky and _analysisGrids:
-    
-    # set a sunlight hours analysis recipe together if there are points
-    analysisRecipe = GridBasedAnalysisRecipe(
-        _sky, _analysisGrids, _analysisType_, _radiancePar_)
+if _skyMTX and _analysisGrids:
+    analysisRecipe = DaylightCoeffGridBasedAnalysisRecipe(
+        _skyMTX, _analysisGrids, _analysisType_, _radiancePar_, reuseDaylightMTX_)

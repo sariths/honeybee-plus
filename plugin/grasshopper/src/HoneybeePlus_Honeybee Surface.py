@@ -15,8 +15,14 @@ Honeybee Surface
         _geo: An input geometry.
         name_: A name for this surface. If the name is not provided Honeybee will
             assign a random name to the surface.
-        _type_: Surface type (). Surface type will be used to set the material and
+        _type_: Surface type. Surface type will be used to set the material and
             construction for the surface if they are not assigned by user.
+            0   Wall           0.5 UndergroundWall
+            1   Roof           1.5 UndergroundCeiling
+            2   Floor          2.25 UndergroundSlab
+            2.5 SlabOnGrade    2.75 ExposedFloor
+            3   Ceiling        4   AirWall
+            5   Window         6   Context
         radMat_: Radiance material. If radiance matrial is not provided the component
             will use the type to assign the default material for the surface. If type
             is also not assigned by user. Honeybee will guess the type of the surface
@@ -35,7 +41,7 @@ Honeybee Surface
 
 ghenv.Component.Name = "HoneybeePlus_Honeybee Surface"
 ghenv.Component.NickName = 'HBSurface'
-ghenv.Component.Message = 'VER 0.0.01\nNOV_16_2016'
+ghenv.Component.Message = 'VER 0.0.01\nNOV_24_2016'
 ghenv.Component.Category = "HoneybeePlus"
 ghenv.Component.SubCategory = '00 :: Create'
 ghenv.Component.AdditionalHelpFromDocStrings = "1"
